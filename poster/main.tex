@@ -63,11 +63,12 @@
 %	TITLE SECTION 
 %----------------------------------------------------------------------------------------
 
-\title{Unnecessarily Complicated Research Title} % Poster title
+\title{Hardware Acceleration of Networking Encryption Algorithm AES in GCM } % Poster title
 
-\author{John Smith\inst{1}, James Smith\inst{2} and Jane Smith\inst{3}} % Author(s)
+\author{Yu Cao\inst{1}} % Author(s)
+\institute{$^1$New York University} % Institution(s)
 
-\institute{$^1$New York University~~$^2$New York University Abu Dhabi~~$^3$New York University Shanghai} % Institution(s)
+% \institute{$^1$New York University~~$^2$New York University Abu Dhabi~~$^3$New York University Shanghai} % Institution(s)
 
 %----------------------------------------------------------------------------------------
 
@@ -91,14 +92,14 @@
 %	OBJECTIVES
 %----------------------------------------------------------------------------------------
 
-\begin{alertblock}{Objectives}
+\begin{alertblock}{Motivations}
 
-Lorem ipsum dolor sit amet, consectetur, nunc tellus pulvinar tortor, commodo eleifend risus arcu sed odio:
+Datacenters are massively deployed with fast and large throughput networks. Packet payload encryption costs too many CPUs. 
 \begin{itemize}
-\item Mollis dignissim, magna augue tincidunt dolor, interdum vestibulum urna
-\item Sed aliquet luctus lectus, eget aliquet leo ullamcorper consequat. Vivamus eros sem, iaculis ut euismod non, sollicitudin vel orci.
-\item Nascetur ridiculus mus.  
-\item Euismod non erat. Nam ultricies pellentesque nunc, ultrices volutpat nisl ultrices a.
+\item Fifteen cores to achieve 40 Gb/s full duplex AES-GCM encryption.
+\item A core in its life can earn estimiated \textbf{\emph{4,500\$}}.
+\item AES-GCM is massively parallel and its primitives are hardware friendly.
+% \item Euismod non erat. Nam ultricies pellentesque nunc, ultrices volutpat nisl ultrices a.
 \end{itemize}
 
 \end{alertblock}
@@ -107,19 +108,19 @@ Lorem ipsum dolor sit amet, consectetur, nunc tellus pulvinar tortor, commodo el
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
 
-\begin{block}{Introduction}
+\begin{block}{Advanced Encryption Standard}
 
-Lorem ipsum dolor \textbf{sit amet}, consectetur adipiscing elit. Sed commodo molestie porta. Sed ultrices scelerisque sapien ac commodo. Donec ut volutpat elit. Sed laoreet accumsan mattis. Integer sapien tellus, auctor ac blandit eget, sollicitudin vitae lorem. Praesent dictum tempor pulvinar. Suspendisse potenti. Sed tincidunt varius ipsum, et porta nulla suscipit et. Etiam congue bibendum felis, ac dictum augue cursus a. \textbf{Donec} magna eros, iaculis sit amet placerat quis, laoreet id est. In ut orci purus, interdum ornare nibh. Pellentesque pulvinar, nibh ac malesuada accumsan, urna nunc convallis tortor, ac vehicula nulla tellus eget nulla. Nullam lectus tortor, \textit{consequat tempor hendrerit} quis, vestibulum in diam. Maecenas sed diam augue.
-
-This statement requires citation \cite{Smith:2012qr}.
+The AES\cite{daemen2013design} encryption algorithm was first developed in the early 2000. It is now widely used as it is easy to implement and has a robust security. AES is an iterative  encryption method that is symmetric, which means same key can encrypt and decrypt the text.
+It is easy to implement both on the software and the hardware due to its intrinsic parallel operational structures shown in fig. \ref{fig:aes}. 
 
 \end{block}
 
 %------------------------------------------------
 
 \begin{figure}
-\includegraphics[width=0.8\linewidth]{placeholder.jpg}
-\caption{Figure caption}
+\includegraphics[width=1\linewidth]{poster/AES_paper.pdf}
+\caption{AES}
+\label{fig:aes}
 \end{figure}
 
 %----------------------------------------------------------------------------------------
@@ -138,25 +139,21 @@ This statement requires citation \cite{Smith:2012qr}.
 %	MATERIALS
 %----------------------------------------------------------------------------------------
 
-\begin{block}{Materials}
+\begin{block}{Galois/Counter Mode}
 
-The following materials were required to complete the research:
+\begin{figure}
+\includegraphics[width=1\linewidth]{poster/GCM.pdf}
+\caption{GCM}
+\label{fig:gcm}
+\end{figure}
+GCM works in a rotated counter scheme. It generates cyphered text as well as a Tag/MAC (Message Authentication Code) on data which is not encrypted. The round counter machanism and the additional authentication code add robustness to the encryption system while only bring reasonable overhead.
+Fig. \ref{fig:modes} shows that we use AES in GCM code because of the round encryption scheme.
 
-\begin{itemize}
-\item Curabitur pellentesque dignissim
-\item Eu facilisis est tempus quis
-\item Duis porta consequat lorem
-\item Eu facilisis est tempus quis
-\end{itemize}
-
-The materials were prepared according to the steps outlined below:
-
-\begin{enumerate}
-\item Curabitur pellentesque dignissim
-\item Eu facilisis est tempus quis
-\item Duis porta consequat lorem
-\item Curabitur pellentesque dignissim
-\end{enumerate}
+The AES-GCM encryption is implemented as a bump-in-the-wire on the back-
+bone of the reference switch design implementation on the NetFPGA platform shown in \ref{impl}.
+% The testbed FPGA has four 10 Gbits/s ports, two of which are connected to 2
+% NICs in the motherboard to serve as the transmitting and receiving ends.
+The slacks vary from \textbf{0.078ns} to \textbf{0.298ns} in \textbf{5.000ns} time window.
 
 \end{block}
 
@@ -166,13 +163,33 @@ The materials were prepared according to the steps outlined below:
 
 \begin{column}{\onecolwid}\vspace{-.6in} % The second column within column 2 (column 2.2)
 
+
 %----------------------------------------------------------------------------------------
 %	METHODS
 %----------------------------------------------------------------------------------------
 
 \begin{block}{Methods}
 
-Lorem ipsum dolor \textbf{sit amet}, consectetur adipiscing elit. Sed laoreet accumsan mattis. Integer sapien tellus, auctor ac blandit eget, sollicitudin vitae lorem. Praesent dictum tempor pulvinar. Suspendisse potenti. Sed tincidunt varius ipsum, et porta nulla suscipit et. Etiam congue bibendum felis, ac dictum augue cursus a. \textbf{Donec} magna eros, iaculis sit amet placerat quis, laoreet id est. In ut orci purus, interdum ornare nibh. Pellentesque pulvinar, nibh ac malesuada accumsan, urna nunc convallis tortor, ac vehicula nulla tellus eget nulla. Nullam lectus tortor, \textit{consequat tempor hendrerit} quis, vestibulum in diam. Maecenas sed diam augue.
+\begin{figure}
+\includegraphics[width=\linewidth]{poster/aes_gcm.png}
+\caption{Original, AES and AES-GCM}
+\label{fig:modes}
+\end{figure}
+
+
+In the first phase,the AES-GCM is implemented in fully pipeline fashion as shown in fig. \ref{impl}. The implementation has in total 15 clocks of pipeline stages. In the pipeline, this design can process 128-bit data one of a time, meaning 128-bit of input data(either AAD or plaintext) will be processed after 15 clks. 
+
+The crypto module  is inserted before the FPGA switch output the packet. the data is transmitted in AXI Stream with 256-bit data chunks. Since the block cipher encrypts every 128-bit block incrementally and the first 112-bit is the header, the mechanism shown in fig. \ref{fig:paral} is used for 2 AES-GCM module encrypting the data in parallel.
+
+
+\begin{figure}
+\includegraphics[width=\linewidth]{poster/crypto.pdf}
+\caption{Encryption Modules}
+
+\label{fig:paral}
+\end{figure}
+
+% A demo is running to  send any message to the other end by encrypted or plaintext modes.
 
 \end{block}
 
@@ -182,90 +199,13 @@ Lorem ipsum dolor \textbf{sit amet}, consectetur adipiscing elit. Sed laoreet ac
 
 \end{columns} % End of the split of column 2 - any content after this will now take up 2 columns width
 
-%----------------------------------------------------------------------------------------
-%	IMPORTANT RESULT
-%----------------------------------------------------------------------------------------
-
-\begin{alertblock}{Important Result}
-
-Lorem ipsum dolor \textbf{sit amet}, consectetur adipiscing elit. Sed commodo molestie porta. Sed ultrices scelerisque sapien ac commodo. Donec ut volutpat elit.
-
-\end{alertblock} 
 
 %----------------------------------------------------------------------------------------
-
-\begin{columns}[t,totalwidth=\twocolwid] % Split up the two columns wide column again
-
-\begin{column}{\onecolwid} % The first column within column 2 (column 2.1)
-
-%----------------------------------------------------------------------------------------
-%	MATHEMATICAL SECTION
-%----------------------------------------------------------------------------------------
-
-\begin{block}{Mathematical Section}
-
-Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin. Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin.
-  
-\begin{equation}
-E = mc^{2}
-\label{eqn:Einstein}
-\end{equation}
-
-Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin. Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin.
-
-\begin{equation}
-\cos^3 \theta =\frac{1}{4}\cos\theta+\frac{3}{4}\cos 3\theta
-\label{eq:refname}
-\end{equation}
-
-Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin. Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin.
-
-\begin{equation}
-\kappa =\frac{\xi}{E_{\mathrm{max}}} %\mathbb{ZNR}
-\end{equation}
-
-\end{block}
-
-%----------------------------------------------------------------------------------------
-
-\end{column} % End of column 2.1
-
-\begin{column}{\onecolwid} % The second column within column 2 (column 2.2)
-
-%----------------------------------------------------------------------------------------
-%	RESULTS
-%----------------------------------------------------------------------------------------
-
-\begin{block}{Results}
-
 \begin{figure}
-\includegraphics[width=0.8\linewidth]{placeholder}
-\caption{Figure caption}
+\includegraphics[width=1\linewidth]{poster/aes_gcm_fpga.pdf}
+\caption{Implementation of AES-GCM}
+\label{impl}
 \end{figure}
-
-Nunc tempus venenatis facilisis. Curabitur suscipit consequat eros non porttitor. Sed a massa dolor, id ornare enim:
-
-\begin{table}
-\vspace{2ex}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\caption{Table caption}
-\end{table}
-
-\end{block}
-
-%----------------------------------------------------------------------------------------
-
-\end{column} % End of column 2.2
-
-\end{columns} % End of the split of column 2
 
 \end{column} % End of the second column
 
@@ -277,9 +217,41 @@ Treatment 3 & 0.0009271 & 0.296 \\
 %	CONCLUSION
 %----------------------------------------------------------------------------------------
 
-\begin{block}{Conclusion}
+\begin{block}{Experiments}
 
-Nunc tempus venenatis facilisis. \textbf{Curabitur suscipit} consequat eros non porttitor. Sed a massa dolor, id ornare enim. Fusce quis massa dictum tortor \textbf{tincidunt mattis}. Donec quam est, lobortis quis pretium at, laoreet scelerisque lacus. Nam quis odio enim, in molestie libero. Vivamus cursus mi at \textit{nulla elementum sollicitudin}.
+Table \ref{comp} makes a rough comparison between our FPGA implementation and CPU implementation according to the statistics from paper \cite{caulfield2016cloud}.
+
+\begin{table}
+\vspace{2ex}
+\begin{tabular}{ccc}
+\toprule
+ & \textbf{CPU} & \textbf{FPGA}\\
+\midrule
+Frequency(MHz) & 4000 & 200\\
+Latency(ns) & 4000 & 75 \\
+Power(W)  & 50 & 7.5 \\
+\bottomrule
+\end{tabular}
+\caption{Comparison between CPU and FPGA}
+\label{comp}
+\end{table}
+
+Table \ref{util} shows the implementation utilization results.
+
+\begin{table}
+\vspace{2ex}
+\begin{tabular}{cccc}
+\toprule
+ & \textbf{Used} & \textbf{Avalaible} & \textbf{Percentage} \\
+\midrule
+LUTs & 23088 & 108300 & 21.32\%\\
+Registers  & 75512 & 866400 & 8.72\% \\
+BRAM(MB) & 272.5 & 1470 & 18.54\% \\
+\bottomrule
+\end{tabular}
+\caption{Utilization}
+\label{util}
+\end{table}
 
 \end{block}
 
@@ -287,13 +259,12 @@ Nunc tempus venenatis facilisis. \textbf{Curabitur suscipit} consequat eros non 
 %	ADDITIONAL INFORMATION
 %----------------------------------------------------------------------------------------
 
-\begin{block}{Additional Information}
+\begin{block}{Future Work}
 
-Maecenas ultricies feugiat velit non mattis. Fusce tempus arcu id ligula varius dictum. 
 \begin{itemize}
-\item Curabitur pellentesque dignissim
-\item Eu facilisis est tempus quis
-\item Duis porta consequat lorem
+\item Do tag generation in 2 AES-GCM pipelines.
+\item Further optimize the pipeline.
+% \item Duis porta consequat lorem
 \end{itemize}
 
 \end{block}
@@ -304,46 +275,26 @@ Maecenas ultricies feugiat velit non mattis. Fusce tempus arcu id ligula varius 
 
 \begin{block}{References}
 
-\nocite{*} % Insert publications even if they are not cited in the poster
+% \nocite{*} % Insert publications even if they are not cited in the poster
 \small{\bibliographystyle{unsrt}
 \bibliography{sample}\vspace{0.75in}}
-
+\begin{center}
+\begin{tabular}{ccc}
+\includegraphics[width=\linewidth]{nyu-logo} % change to nyu-logo and nyush-logo accordingly
+\end{tabular}
+\end{center}
 \end{block}
 
 %----------------------------------------------------------------------------------------
 %	ACKNOWLEDGEMENTS
 %----------------------------------------------------------------------------------------
 
-\setbeamercolor{block title}{fg=red,bg=white} % Change the block title color
-
-\begin{block}{Acknowledgements}
-
-\small{\rmfamily{Nam mollis tristique neque eu luctus. Suspendisse rutrum congue nisi sed convallis. Aenean id neque dolor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.}} \\
-
-\end{block}
-
-%----------------------------------------------------------------------------------------
-%	CONTACT INFORMATION
-%----------------------------------------------------------------------------------------
-
-\setbeamercolor{block alerted title}{fg=black,bg=norange} % Change the alert block title colors
-\setbeamercolor{block alerted body}{fg=black,bg=white} % Change the alert block body colors
-
-\begin{alertblock}{Contact Information}
-
-\begin{itemize}
-\item Web: \href{http://www.university.edu/smithlab}{http://www.university.edu/smithlab}
-\item Email: \href{mailto:john@smith.com}{john@smith.com}
-\item Phone: +1 (000) 111 1111
-\end{itemize}
-
-\end{alertblock}
-
-\begin{center}
-\begin{tabular}{ccc}
-\includegraphics[width=\linewidth]{nyuad-logo} % change to nyu-logo and nyush-logo accordingly
-\end{tabular}
-\end{center}
+% % \setbeamercolor{block title}{fg=red,bg=white} % Change the block title color
+% \begin{center}
+% \begin{tabular}{ccc}
+% \includegraphics[width=\linewidth]{nyu-logo} % change to nyu-logo and nyush-logo accordingly
+% \end{tabular}
+% \end{center}
 
 %----------------------------------------------------------------------------------------
 
